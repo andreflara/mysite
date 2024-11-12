@@ -20,7 +20,7 @@ export function Projects() {
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
                 icon={faChevronLeft}
               />
-              <a href="/" >Voltar</a>
+              <Link href="/" >Voltar</Link>
             </div>
           </button>
           <nav>
@@ -122,7 +122,7 @@ export function Projects() {
               </a>
             </div>
             <div>
-              <a
+              <Link
                 target="_blank"
                 rel="noopener noreferrer"
                 href="https://suporteunimed.vercel.app/"
@@ -174,10 +174,10 @@ export function Projects() {
                     </div>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
             <div>
-              <a
+              <Link
                 target="_blank"
                 rel="noopener noreferrer"
                 href="https://suporteunimed.vercel.app/"
@@ -229,7 +229,7 @@ export function Projects() {
                     </div>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
           
             {/* Adicione mais projetos aqui seguindo o mesmo padrão */}
