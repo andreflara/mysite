@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { IconBrandGithub, IconBrandLinkedin } from "@tabler/icons-react";
 
-export function HomePage() {
+export default function HomePage() {
   return (
     <main className="font-mono flex h-screen items-center justify-center bg-black text-white">
       <div className="flex flex-col gap-8">
@@ -113,4 +113,3 @@ export function HomePage() {
   );
 }
 
-export default HomePage;

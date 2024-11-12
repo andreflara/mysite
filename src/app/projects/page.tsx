@@ -5,8 +5,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
-
-export function Projects() {
+export default function Projects() {
   return (
     <div className=" bg-black text-white p-6 md:p-12 min-h-screen">
       <div className="max-w-6xl mx-auto">
@@ -14,13 +13,16 @@ export function Projects() {
           className="mb-12 w-full flex items-center justify-between"
           title="Go Back"
         >
-          <button type="button" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 hover:text-primary p-2">
+          <button
+            type="button"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 hover:text-primary p-2"
+          >
             <div className="flex gap-2 items-center transition-transform">
               <FontAwesomeIcon
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
                 icon={faChevronLeft}
               />
-              <Link href="/" >Voltar</Link>
+              <Link href="/">Voltar</Link>
             </div>
           </button>
           <nav>
@@ -231,7 +233,7 @@ export function Projects() {
                 </div>
               </Link>
             </div>
-          
+
             {/* Adicione mais projetos aqui seguindo o mesmo padrão */}
           </div>
         </div>
@@ -239,5 +241,3 @@ export function Projects() {
     </div>
   );
 }
-
-export default Projects;
