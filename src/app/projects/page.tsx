@@ -3,6 +3,7 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 
 export function Projects() {
@@ -24,12 +25,12 @@ export function Projects() {
           </button>
           <nav>
             <div className="hidden lg:flex gap-6">
-              <a
+              <Link
                 className="text-sm transition-colors hover:text-primary"
                 href="/"
               >
                 Início
-              </a>
+              </Link>
               {/* Adicione mais links de navegação aqui, se necessário */}
             </div>
           </nav>
