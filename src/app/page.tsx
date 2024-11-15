@@ -14,14 +14,16 @@ export default function HomePage() {
           </p>
         </header>
 
-        <nav className="text-gray-500">
-          <h2 className="text-lg font-medium uppercase tracking-wider">Menu</h2>
-          <div className="space-y-1">
+        <nav>
+          <h2 className="text-lg uppercase tracking-wider text-gray-400">
+            Menu
+          </h2>
+          <div className="">
             <Link
               href="#"
-              className="group flex items-center justify-between rounded-lg px-4 py-2 transition-colors hover:bg-gray-700"
+              className="group flex items-center justify-between rounded-lg px-3 py-2 transition-colors hover:bg-gray-700"
             >
-              <span className="font-medium">Sobre</span>
+              <span className="font-md">Sobre</span>
               <FontAwesomeIcon
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
                 icon={faChevronRight}
@@ -29,9 +31,9 @@ export default function HomePage() {
             </Link>
             <Link
               href="/projects"
-              className="group flex items-center justify-between rounded-lg px-4 py-2 transition-colors hover:bg-gray-700"
+              className="group flex items-center justify-between rounded-lg px-3 py-2 transition-colors hover:bg-gray-700"
             >
-              <span className="font-medium">Projetos</span>
+              <span className="font-md">Projetos</span>
               <FontAwesomeIcon
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
                 icon={faChevronRight}
@@ -52,7 +54,7 @@ export default function HomePage() {
             >
               <button
                 type="button"
-                className="flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-500 disabled:pointer-events-none disabled:opacity-50 border border-gray-600 bg-black shadow-sm hover:bg-gray-800 hover:text-white h-9 px-4 py-2 w-full gap-2"
+                className="flex items-center justify-center whitespace-nowrap rounded-md font-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-500 disabled:pointer-events-none disabled:opacity-50 border border-gray-600 bg-black shadow-sm hover:bg-gray-800 hover:text-white h-9 px-4 py-2 w-full gap-2"
               >
                 Suporte Unimed
               </button>
@@ -62,7 +64,7 @@ export default function HomePage() {
             <Link href="#">
               <button
                 type="button"
-                className="flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-500 disabled:pointer-events-none disabled:opacity-50 border border-gray-600 bg-black shadow-sm hover:bg-gray-800 hover:text-white h-9 px-4 py-2 w-full gap-2"
+                className="flex items-center justify-center whitespace-nowrap rounded-md font-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-500 disabled:pointer-events-none disabled:opacity-50 border border-gray-600 bg-black shadow-sm hover:bg-gray-800 hover:text-white h-9 px-4 py-2 w-full gap-2"
               >
                 MediaKit
               </button>
@@ -70,7 +72,7 @@ export default function HomePage() {
             <Link href="#">
               <button
                 type="button"
-                className="flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-500 disabled:pointer-events-none disabled:opacity-50 border border-gray-600 bg-black shadow-sm hover:bg-gray-800 hover:text-white h-9 px-4 py-2 w-full gap-2"
+                className="flex items-center justify-center whitespace-nowrap rounded-md font-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-500 disabled:pointer-events-none disabled:opacity-50 border border-gray-600 bg-black shadow-sm hover:bg-gray-800 hover:text-white h-9 px-4 py-2 w-full gap-2"
               >
                 YouTube
               </button>
@@ -106,10 +108,10 @@ export default function HomePage() {
                 <IconBrandLinkedin stroke={2} />
               </button>
             </a>
+            
           </div>
         </footer>
       </div>
     </main>
   );
 }
-

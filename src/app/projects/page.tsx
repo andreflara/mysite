@@ -28,12 +28,12 @@ export default function Projects() {
           <nav>
             <div className="hidden lg:flex gap-6">
               <Link
-                className="text-sm transition-colors hover:text-primary"
+                className="text-lg uppercase tracking-wider text-gray-400"
                 href="/"
               >
-                Início
+                Menu
               </Link>
-              {/* Adicione mais links de navegação aqui, se necessário */}
+           
             </div>
           </nav>
         </div>
@@ -65,7 +65,6 @@ export default function Projects() {
                 type="text"
               />
             </div>
-            {/* Se desejar adicionar filtros ou outros elementos, insira-os aqui */}
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <div>
@@ -127,14 +126,14 @@ export default function Projects() {
               <Link
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://suporteunimed.vercel.app/"
+                href="https://oandrezito.github.io/dev.finances/"
                 className="block"
               >
                 <div className="rounded-xl  bg-black border border-gray-700 shadow-lg hover:shadow-2xl transition-shadow duration-300 relative overflow-hidden group">
                   <div className="relative">
                     <img
-                      src="./project-cover/suporteunimed.png"
-                      alt="Suporte Unimed"
+                      src="./project-cover/devfinance.png"
+                      alt="dev.finance$"
                       className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -159,11 +158,11 @@ export default function Projects() {
                   </div>
                   <div className="p-4">
                     <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-                      Suporte Unimed
+                      dev.finance$
                     </h2>
                     <p className="text-gray-400">
-                      Site com links rápidos para suporte externo da equipe de
-                      suporte técnico.
+                      O Dev.Finance é um projeto simples para auxiliar no
+                      controle das finanças.
                     </p>
                   </div>
                   <div className="p-3 flex items-center justify-between">
@@ -178,7 +177,7 @@ export default function Projects() {
                 </div>
               </Link>
             </div>
-            <div>
+            {/* <div>
               <Link
                 target="_blank"
                 rel="noopener noreferrer"
@@ -232,9 +231,7 @@ export default function Projects() {
                   </div>
                 </div>
               </Link>
-            </div>
-
-            {/* Adicione mais projetos aqui seguindo o mesmo padrão */}
+            </div> */}
           </div>
         </div>
       </div>
