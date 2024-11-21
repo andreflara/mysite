@@ -30,7 +30,7 @@ interface Receita {
   id: string;
   descricao: string;
   valor: number;
-  dataDataReceita: string;
+  dataEntrada: string;
 }
 
 // Utility Functions
@@ -41,7 +41,11 @@ const formatCurrency = (value: number) =>
   }).format(value);
 
 // Função para calcular total segura
-const calculateTotal = (items: any[] | undefined) =>
+type Item = {
+  valor: number;
+};
+
+const calculateTotal = (items: Item[] | undefined) =>
   items?.reduce((total, item) => total + item.valor, 0) || 0;
 
 const Dashboard: React.FC<{
@@ -50,28 +54,18 @@ const Dashboard: React.FC<{
 }> = ({ despesas = [], receitas = [] }) => {
   const [showDashboard, setShowDashboard] = useState(true);
 
-  // Verificação de atualizações de despesas e receitas
-  console.log("Despesas:", despesas);
-  console.log("Receitas:", receitas);
-
   // Memoized Calculations com tratamento seguro
   const totalDespesas = useMemo(() => {
-    console.log("Calculando total de despesas...");
     return calculateTotal(despesas);
   }, [despesas]);
 
   const totalReceitas = useMemo(() => {
-    console.log("Calculando total de receitas...");
     return calculateTotal(receitas);
   }, [receitas]);
-
-  // Verificação de cálculos totais
-  console.log("Total de Despesas:", totalDespesas);
-  console.log("Total de Receitas:", totalReceitas);
+ 
 
   // Prepare data for chart
   const chartData = useMemo(() => {
-    console.log("Gerando dados para o gráfico...");
     if (!despesas.length && !receitas.length) return [];
 
     const combinedData = [
@@ -84,7 +78,7 @@ const Dashboard: React.FC<{
       ...receitas.map((item) => ({
         name: item.descricao,
         valor: item.valor,
-        data: item.dataDataReceita,
+        data: item.dataEntrada,
         type: "Receita",
       })),
     ];
@@ -110,15 +104,15 @@ const Dashboard: React.FC<{
 
   return (
     <div className="border border-gray-600 rounded-md">
-      <div
-        className="hover:bg-gray-700 text-white p-4 cursor-pointer flex justify-between items-center"
+      <button
+        className="w-full h-full hover:bg-gray-700 text-white p-4 cursor-pointer flex justify-between items-center"
         onClick={() => setShowDashboard(!showDashboard)}
-        role="button"
+        type="button"
         aria-controls="dashboard-section"
       >
         <h2 className="text-lg font-semibold">Financial Dashboard</h2>
         {showDashboard ? <ChevronDown size={24} /> : <ChevronRight size={24} />}
-      </div>
+      </button>
 
       {showDashboard && (
         <div id="dashboard-section" className="p-4">

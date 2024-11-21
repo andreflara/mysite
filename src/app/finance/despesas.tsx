@@ -97,11 +97,14 @@ const Despesas: React.FC<{
     });
   }, [novaDespesa, validarDespesa, onDespesasUpdate, despesas]);
 
-  const removerDespesa = useCallback((id: string) => {
-    const newDespesas = despesas.filter(despesa => despesa.id !== id);
-    setDespesas(newDespesas);
-    onDespesasUpdate?.(newDespesas); // Atualiza o total de despesas no componente pai
-  }, [onDespesasUpdate, despesas]);
+  const removerDespesa = useCallback(
+    (id: string) => {
+      const newDespesas = despesas.filter((despesa) => despesa.id !== id);
+      setDespesas(newDespesas);
+      onDespesasUpdate?.(newDespesas); // Atualiza o total de despesas no componente pai
+    },
+    [onDespesasUpdate, despesas]
+  );
 
   const editarDespesa = useCallback(
     (id: string) => {
@@ -117,7 +120,7 @@ const Despesas: React.FC<{
   const salvarEdicao = useCallback(() => {
     if (!validarDespesa(novaDespesa)) return;
 
-    const newDespesas = despesas.map(despesa => 
+    const newDespesas = despesas.map((despesa) =>
       despesa.id === modoEdicao ? novaDespesa : despesa
     );
 
@@ -228,7 +231,9 @@ const Despesas: React.FC<{
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
             <span
-              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${STATUS_COLORS[despesa.status]}`}
+              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                STATUS_COLORS[despesa.status]
+              }`}
             >
               {despesa.status}
             </span>
@@ -262,15 +267,15 @@ const Despesas: React.FC<{
       className="border border-gray-600 rounded-md"
       aria-expanded={showDespesas}
     >
-      <div
-        className="hover:bg-gray-700 text-white p-4 cursor-pointer flex justify-between items-center"
+      <button
+        type="button"
+        className="hover:bg-gray-700 h-full w-full text-white p-4 cursor-pointer flex justify-between items-center"
         onClick={() => setShowDespesas(!showDespesas)}
-        role="button"
         aria-controls="despesas-section"
       >
         <h2 className="text-lg font-semibold">Despesas</h2>
         {showDespesas ? <ChevronDown size={24} /> : <ChevronRight size={24} />}
-      </div>
+      </button>
 
       {showDespesas && (
         <div id="despesas-section" className="p-4">
@@ -283,16 +288,20 @@ const Despesas: React.FC<{
               <table className="w-full">
                 <thead className="bg-white">
                   <tr>
-                    {["Descrição", "Valor", "Vencimento", "Status", "Ações"].map(
-                      (header) => (
-                        <th
-                          key={header}
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          {header}
-                        </th>
-                      )
-                    )}
+                    {[
+                      "Descrição",
+                      "Valor",
+                      "Vencimento",
+                      "Status",
+                      "Ações",
+                    ].map((header) => (
+                      <th
+                        key={header}
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        {header}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 {renderTableRows()}

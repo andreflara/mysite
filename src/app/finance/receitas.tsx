@@ -15,14 +15,14 @@ interface Receita {
   id: string;
   descricao: string;
   valor: number;
-  dataDataReceita: string;
+  dataEntrada: string;
 }
 
 // Constants
 const INITIAL_DESPESA: Omit<Receita, "id"> = {
   descricao: "",
   valor: 0,
-  dataDataReceita: new Date().toISOString().split("T")[0],
+  dataEntrada: new Date().toISOString().split("T")[0],
 };
 
 // Utility Functions
@@ -44,7 +44,10 @@ const Alert: React.FC<{ message: string }> = React.memo(({ message }) => (
 ));
 
 // Main Component
-const Receitas: React.FC = () => {
+const Receitas: React.FC<{
+  initialReceitas?: Receita[];
+  onReceitasUpdate?: (despesas: Receita[]) => void;
+}> = ({ initialReceitas = [], onReceitasUpdate }) => {
   // State Management
   const [receitas, setReceitas] = useState<Receita[]>([]);
   const [novaReceita, setNovaReceita] = useState<Receita>({
@@ -65,7 +68,7 @@ const Receitas: React.FC = () => {
       setErro("O valor deve ser maior que zero");
       return false;
     }
-    if (!receita.dataDataReceita) {
+    if (!receita.dataEntrada) {
       setErro("A data da receita é obrigatória");
       return false;
     }
@@ -77,16 +80,23 @@ const Receitas: React.FC = () => {
     setErro("");
     if (!validarReceita(novaReceita)) return;
 
-    setReceitas((prev) => [...prev, novaReceita]);
+    const newReceitas = [...receitas, novaReceita];
+    setReceitas(newReceitas);
+    onReceitasUpdate?.(newReceitas);
     setNovaReceita({
       ...INITIAL_DESPESA,
       id: crypto.randomUUID(),
     });
-  }, [novaReceita, validarReceita]);
+  }, [novaReceita, validarReceita, onReceitasUpdate, receitas]);
 
-  const removerReceita = useCallback((id: string) => {
-    setReceitas((prev) => prev.filter((receita) => receita.id !== id));
-  }, []);
+  const removerReceita = useCallback(
+    (id: string) => {
+      const newReceitas = receitas.filter((receita) => receita.id !== id);
+      setReceitas(newReceitas);
+      onReceitasUpdate?.(newReceitas); // Atualiza o total de despesas no componente pai
+    },
+    [onReceitasUpdate, receitas]
+  );
 
   const editarReceita = useCallback(
     (id: string) => {
@@ -102,15 +112,19 @@ const Receitas: React.FC = () => {
   const salvarEdicao = useCallback(() => {
     if (!validarReceita(novaReceita)) return;
 
-    setReceitas((prev) =>
-      prev.map((receita) => (receita.id === modoEdicao ? novaReceita : receita))
+    const newReceitas = receitas.map((receita) =>
+      receita.id === modoEdicao ? novaReceita : receita
     );
+
+    setReceitas(newReceitas);
+    onReceitasUpdate?.(newReceitas);
+
     setModoEdicao(null);
     setNovaReceita({
       ...INITIAL_DESPESA,
       id: crypto.randomUUID(),
     });
-  }, [modoEdicao, novaReceita, validarReceita]);
+  }, [modoEdicao, novaReceita, validarReceita, onReceitasUpdate, receitas]);
 
   // Memoized Calculations
   const calcularTotal = useMemo(
@@ -137,15 +151,17 @@ const Receitas: React.FC = () => {
         type="number"
         placeholder="Valor"
         value={novaReceita.valor}
-        onChange={e => setNovaReceita(prev => ({
-          ...prev,
-          valor: Number(e.target.value),
-        }))}
+        onChange={(e) =>
+          setNovaReceita((prev) => ({
+            ...prev,
+            valor: Number(e.target.value),
+          }))
+        }
         className="w-full p-2 border rounded focus:ring-2 focus:border-hidden"
       />
       <input
         type="date"
-        value={novaReceita.dataDataReceita}
+        value={novaReceita.dataEntrada}
         onChange={(e) =>
           setNovaReceita((prev) => ({
             ...prev,
@@ -157,7 +173,7 @@ const Receitas: React.FC = () => {
       <button
         type="button"
         onClick={modoEdicao ? salvarEdicao : adicionarReceita}
-        className="w-full bg-gray-600 hover:bg-gray-700 text-white p-2 rounded flex items-center justify-center gap-2 transition-colors"
+        className="w-full h-full bg-gray-600 hover:bg-gray-700 text-white p-2 rounded flex items-center justify-center gap-2 transition-colors"
       >
         {modoEdicao ? (
           <>
@@ -183,7 +199,7 @@ const Receitas: React.FC = () => {
             {formatCurrency(receita.valor)}
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
-            {formatDate(receita.dataDataReceita)}
+            {formatDate(receita.dataEntrada)}
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="flex gap-2">
@@ -214,15 +230,15 @@ const Receitas: React.FC = () => {
       className="border border-gray-600 rounded-md"
       aria-expanded={showReceitas}
     >
-      <div
-        className="hover:bg-gray-700 text-white p-4 cursor-pointer flex justify-between items-center"
+      <button
+        type="button"
+        className="hover:bg-gray-700 h-full w-full text-white p-4 cursor-pointer flex justify-between items-center"
         onClick={() => setShowReceitas(!showReceitas)}
-        role="button"
         aria-controls="receitas-section"
       >
         <h2 className="text-lg font-semibold">Receitas</h2>
         {showReceitas ? <ChevronDown size={24} /> : <ChevronRight size={24} />}
-      </div>
+      </button>
 
       {showReceitas && (
         <div id="receitas-section" className="p-4">
@@ -235,19 +251,16 @@ const Receitas: React.FC = () => {
               <table className="w-full">
                 <thead className="bg-white">
                   <tr>
-                    {[
-                      "Descrição",
-                      "Valor",
-                      "Data Receita",
-                      "Ações",
-                    ].map((header) => (
-                      <th
-                        key={header}
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        {header}
-                      </th>
-                    ))}
+                    {["Descrição", "Valor", "Data Receita", "Ações"].map(
+                      (header) => (
+                        <th
+                          key={header}
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          {header}
+                        </th>
+                      )
+                    )}
                   </tr>
                 </thead>
                 {renderTableRows()}
