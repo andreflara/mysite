@@ -49,7 +49,7 @@ const Alert: React.FC<{ message: string }> = React.memo(({ message }) => (
     <AlertCircle className="h-4 w-4" />
     <span>{message}</span>
   </div>
-));
+));Alert.displayName = 'Alert'; 
 
 // Main Component
 const Despesas: React.FC<{

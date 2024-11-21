@@ -41,7 +41,7 @@ const Alert: React.FC<{ message: string }> = React.memo(({ message }) => (
     <AlertCircle className="h-4 w-4" />
     <span>{message}</span>
   </div>
-));
+));Alert.displayName = 'Alert'; 
 
 // Main Component
 const Receitas: React.FC<{
@@ -49,7 +49,7 @@ const Receitas: React.FC<{
   onReceitasUpdate?: (despesas: Receita[]) => void;
 }> = ({ initialReceitas = [], onReceitasUpdate }) => {
   // State Management
-  const [receitas, setReceitas] = useState<Receita[]>([]);
+  const [receitas, setReceitas] = useState<Receita[]>(initialReceitas);
   const [novaReceita, setNovaReceita] = useState<Receita>({
     ...INITIAL_DESPESA,
     id: crypto.randomUUID(),
