@@ -13,7 +13,9 @@ interface Despesa {
   descricao: string;
   valor: number;
   status: "Pago" | "Pendente" | "Atrasado";
-  dataVencimento: string;  // Changed from 'data' to match Despesas component
+  modo: "Parcelado" | "À Vista";
+  dataVencimento: string;
+  parcelas?: { valor: number; data: string }[];  // Changed from 'data' to match Despesas component
 }
 
 interface Receita {

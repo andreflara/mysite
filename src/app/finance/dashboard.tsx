@@ -23,6 +23,7 @@ interface Despesa {
   descricao: string;
   valor: number;
   status: "Pago" | "Pendente" | "Atrasado";
+  
   dataVencimento: string;
 }
 
