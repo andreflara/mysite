@@ -16,7 +16,9 @@ interface Despesa {
   descricao: string;
   valor: number;
   status: "Pago" | "Pendente" | "Atrasado";
+  modo: "Parcelado" | "À Vista";
   dataVencimento: string;
+  parcelas?: { valor: number; data: string }[]; // Adicionando as parcelas
 }
 
 // Constants
@@ -24,7 +26,9 @@ const INITIAL_DESPESA: Omit<Despesa, "id"> = {
   descricao: "",
   valor: 0,
   status: "Pendente",
+  modo: "À Vista",
   dataVencimento: new Date().toISOString().split("T")[0],
+  parcelas: [],
 };
 
 const STATUS_COLORS = {
@@ -80,8 +84,12 @@ const Despesas: React.FC<{
       setErro("A data de vencimento é obrigatória");
       return false;
     }
+    if (despesa.modo === "Parcelado" && (!novaDespesa.parcelas || novaDespesa.parcelas.length === 0)) {
+      setErro("O número de parcelas é obrigatório");
+      return false;
+    }
     return true;
-  }, []);
+  }, [novaDespesa.parcelas]);
 
   // Handlers
   const adicionarDespesa = useCallback(() => {
@@ -134,13 +142,31 @@ const Despesas: React.FC<{
     });
   }, [modoEdicao, novaDespesa, validarDespesa, onDespesasUpdate, despesas]);
 
-  // Memoized Calculations
   const calcularTotal = useMemo(
     () => despesas.reduce((total, despesa) => total + despesa.valor, 0),
     [despesas]
   );
 
-  // Render Methods
+  const handleParcelasChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const numParcelas = Number.parseInt(e.target.value, 10);
+    const valorParcela = novaDespesa.valor / numParcelas;
+    const parcelas: { valor: number; data: string; }[] = [];
+    const currentDate = new Date(novaDespesa.dataVencimento);
+
+    for (let i = 0; i < numParcelas; i++) {
+      const nextMonth = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+      parcelas.push({
+        valor: valorParcela,
+        data: nextMonth.toISOString().split("")[0], // Data de vencimento das parcelas
+      });
+    }
+
+    setNovaDespesa((prev) => ({
+      ...prev,
+      parcelas,
+    }));
+  };
+
   const renderInputs = () => (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-1 text-[#9aa2ad]">
       <input
@@ -198,6 +224,7 @@ const Despesas: React.FC<{
           Atrasado
         </option>
       </select>
+
       <button
         type="button"
         onClick={modoEdicao ? salvarEdicao : adicionarDespesa}
@@ -215,6 +242,33 @@ const Despesas: React.FC<{
           </>
         )}
       </button>
+
+      <select
+        value={novaDespesa.modo}
+        onChange={(e) =>
+          setNovaDespesa((prev) => ({
+            ...prev,
+            modo: e.target.value as Despesa["modo"],
+          }))
+        }
+        className="w-full p-2 border rounded focus:ring-2 focus:border-hidden"
+      >
+        <option value="À Vista" className="text-black">
+          À Vista
+        </option>
+        <option value="Parcelado" className="text-black">
+          Parcelado
+        </option>
+      </select>
+
+      {novaDespesa.modo === "Parcelado" && (
+        <input
+          type="number"
+          placeholder="Número de Parcelas"
+          onChange={handleParcelasChange}
+          className="w-full p-2 border rounded focus:ring-2 focus:border-hidden"
+        />
+      )}
     </div>
   );
 
@@ -227,7 +281,13 @@ const Despesas: React.FC<{
             {formatCurrency(despesa.valor)}
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
-            {formatDate(despesa.dataVencimento)}
+            {despesa.modo === "Parcelado" && despesa.parcelas
+              ? despesa.parcelas.map((parcela, index) => (
+                  <div key={index}>
+                    {formatCurrency(parcela.valor)} - {formatDate(parcela.data)}
+                  </div>
+                ))
+              : formatDate(despesa.dataVencimento)}
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
             <span
@@ -288,13 +348,7 @@ const Despesas: React.FC<{
               <table className="w-full">
                 <thead className="bg-white">
                   <tr>
-                    {[
-                      "Descrição",
-                      "Valor",
-                      "Vencimento",
-                      "Status",
-                      "Ações",
-                    ].map((header) => (
+                    {["Descrição", "Valor", "Vencimento", "Status", "Ações"].map((header) => (
                       <th
                         key={header}
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
