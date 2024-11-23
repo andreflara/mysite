@@ -8,14 +8,20 @@ import Dashboard from "./dashboard";
 import { useState } from "react";
 
 // Align types with the component implementations
+interface Parcela {
+  valor: number;
+  data: string;
+  status: "Pago" | "Pendente" | "Atrasado";
+}
+
 interface Despesa {
   id: string;
   descricao: string;
   valor: number;
-  status: "Pago" | "Pendente" | "Atrasado";
+  status: "Pago" | "Pendente" | "Atrasado" ;
   modo: "Parcelado" | "À Vista";
   dataVencimento: string;
-  parcelas?: { valor: number; data: string }[];  // Changed from 'data' to match Despesas component
+  parcelas?: Parcela[];
 }
 
 interface Receita {

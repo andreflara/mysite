@@ -11,14 +11,20 @@ import {
 } from "lucide-react";
 
 // Types
+interface Parcela {
+  valor: number;
+  data: string;
+  status: "Pago" | "Pendente" | "Atrasado";
+}
+
 interface Despesa {
   id: string;
   descricao: string;
   valor: number;
-  status: "Pago" | "Pendente" | "Atrasado";
+  status: "Pago" | "Pendente" | "Atrasado" ;
   modo: "Parcelado" | "À Vista";
   dataVencimento: string;
-  parcelas?: { valor: number; data: string }[]; // Adicionando as parcelas
+  parcelas?: Parcela[];
 }
 
 // Constants
@@ -47,13 +53,84 @@ const formatCurrency = (value: number) =>
 const formatDate = (dateString: string) =>
   new Date(dateString).toLocaleDateString("pt-BR");
 
+const generateParcelasForDespesa = (
+  valor: number,
+  dataInicial: string,
+  numParcelas: number
+): Parcela[] => {
+  const parcelas: Parcela[] = [];
+  const valorParcela = Number((valor / numParcelas).toFixed(2));
+  const currentDate = new Date(dataInicial);
+
+  for (let i = 0; i < numParcelas; i++) {
+    const nextMonth = new Date(currentDate);
+    nextMonth.setMonth(nextMonth.getMonth() + i);
+
+    parcelas.push({
+      valor:
+        i === numParcelas - 1
+          ? valor - valorParcela * (numParcelas - 1)
+          : valorParcela,
+      data: nextMonth.toISOString().split("T")[0],
+      status: "Pendente",
+    });
+  }
+
+  return parcelas;
+};
+
 // Alert Component
-const Alert: React.FC<{ message: string }> = React.memo(({ message }) => (
+const Alert = React.memo<{ message: string }>(({ message }) => (
   <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 flex items-center gap-2">
     <AlertCircle className="h-4 w-4" />
     <span>{message}</span>
   </div>
-));Alert.displayName = 'Alert'; 
+));
+Alert.displayName = "Alert";
+
+// Input Field Component
+const InputField = React.memo<{
+  type: string;
+  placeholder?: string;
+  value: string | number;
+  onChange: (value: string) => void;
+  className?: string;
+}>(({ type, placeholder, value, onChange, className }) => (
+  <input
+    type={type}
+    placeholder={placeholder}
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    className={`w-full p-2 border rounded focus:ring-2 focus:border-hidden ${className}`}
+  />
+));
+InputField.displayName = "InputField";
+
+// Status Select Component
+const StatusSelect = React.memo<{
+  value: "Pago" | "Pendente" | "Atrasado";
+  onChange: (value: "Pago" | "Pendente" | "Atrasado") => void;
+  className?: string;
+}>(({ value, onChange, className }) => (
+  <select
+    value={value}
+    onChange={(e) =>
+      onChange(e.target.value as "Pago" | "Pendente" | "Atrasado")
+    }
+    className={` px-2 py-[0.1rem] text-xs rounded-md border ${STATUS_COLORS[value]} ${className}`}
+  >
+    <option className="bg-yellow-100 text-yellow-700" value="Pendente">
+      Pendente
+    </option>
+    <option className="bg-green-100 text-green-700" value="Pago">
+      Pago
+    </option>
+    <option className=" bg-red-100 text-red-700" value="Atrasado">
+      Atrasado
+    </option>
+  </select>
+));
+StatusSelect.displayName = "StatusSelect";
 
 // Main Component
 const Despesas: React.FC<{
@@ -69,6 +146,7 @@ const Despesas: React.FC<{
   const [erro, setErro] = useState<string>("");
   const [modoEdicao, setModoEdicao] = useState<string | null>(null);
   const [showDespesas, setShowDespesas] = useState(false);
+  const [numParcelas, setNumParcelas] = useState<number>(1);
 
   // Validation
   const validarDespesa = useCallback((despesa: Despesa): boolean => {
@@ -84,32 +162,117 @@ const Despesas: React.FC<{
       setErro("A data de vencimento é obrigatória");
       return false;
     }
-    if (despesa.modo === "Parcelado" && (!novaDespesa.parcelas || novaDespesa.parcelas.length === 0)) {
-      setErro("O número de parcelas é obrigatório");
+    if (
+      despesa.modo === "Parcelado" &&
+      (!despesa.parcelas || despesa.parcelas.length === 0)
+    ) {
+      setErro("O número de parcelas é obrigatório para pagamento parcelado");
       return false;
     }
     return true;
-  }, [novaDespesa.parcelas]);
+  }, []);
 
-  // Handlers
+  const handleParcelaStatusChange = useCallback(
+    (
+      despesaId: string,
+      parcelaIndex: number | null, 
+      novoStatus: "Pago" | "Pendente" | "Atrasado"
+    ) => {
+      setDespesas((prevDespesas) =>
+        prevDespesas.map((despesa) => {
+          if (despesa.id === despesaId) {
+            if (despesa.modo === "Parcelado" && despesa.parcelas) {
+              // Lógica para atualizar o status de uma parcela
+              const novasParcelas = [...despesa.parcelas];
+              if (parcelaIndex !== null) {
+                novasParcelas[parcelaIndex] = {
+                  ...novasParcelas[parcelaIndex],
+                  status: novoStatus,
+                };
+              }
+
+              // Atualizando o status da despesa com base nas parcelas
+              const allPago = novasParcelas.every((p) => p.status === "Pago");
+              const hasAtrasado = novasParcelas.some(
+                (p) => p.status === "Atrasado"
+              );
+
+              return {
+                ...despesa,
+                parcelas: novasParcelas,
+                status: allPago
+                  ? "Pago"
+                  : hasAtrasado
+                  ? "Atrasado"
+                  : "Pendente",
+              };
+            }
+            if (despesa.modo === "À Vista") {
+              // Lógica para atualizar o status da despesa no modo "À Vista"
+              return {
+                ...despesa,
+                status: novoStatus, // No "À Vista", apenas alteRA o status diretamente
+              };
+            }
+          }
+          return despesa;
+        })
+      );
+    },
+    []
+  );
+
+  const handleDespesaChange = useCallback(
+    (field: keyof Despesa, value: Despesa[keyof Despesa]) => {
+      setNovaDespesa((prev) => {
+        const updated = { ...prev, [field]: value };
+
+        if (field === "modo" && value === "À Vista") {
+          updated.parcelas = [];
+          setNumParcelas(1);
+        }
+
+        return updated;
+      });
+    },
+    []
+  );
+
+  const handleParcelasChange = useCallback((numParcelasStr: string) => {
+    const num = Number.parseInt(numParcelasStr, 10);
+    if (Number.isNaN(num) || num <= 0) return;
+
+    setNumParcelas(num);
+    setNovaDespesa((prev) => ({
+      ...prev,
+      parcelas: generateParcelasForDespesa(
+        prev.valor,
+        prev.dataVencimento,
+        num
+      ),
+    }));
+  }, []);
+
   const adicionarDespesa = useCallback(() => {
     setErro("");
     if (!validarDespesa(novaDespesa)) return;
 
     const newDespesas = [...despesas, novaDespesa];
     setDespesas(newDespesas);
-    onDespesasUpdate?.(newDespesas); // Atualiza o total de despesas no componente pai
+    onDespesasUpdate?.(newDespesas);
+
     setNovaDespesa({
       ...INITIAL_DESPESA,
       id: crypto.randomUUID(),
     });
+    setNumParcelas(1);
   }, [novaDespesa, validarDespesa, onDespesasUpdate, despesas]);
 
   const removerDespesa = useCallback(
     (id: string) => {
       const newDespesas = despesas.filter((despesa) => despesa.id !== id);
       setDespesas(newDespesas);
-      onDespesasUpdate?.(newDespesas); // Atualiza o total de despesas no componente pai
+      onDespesasUpdate?.(newDespesas);
     },
     [onDespesasUpdate, despesas]
   );
@@ -120,6 +283,7 @@ const Despesas: React.FC<{
       if (despesa) {
         setModoEdicao(id);
         setNovaDespesa(despesa);
+        setNumParcelas(despesa.parcelas?.length || 1);
       }
     },
     [despesas]
@@ -140,6 +304,7 @@ const Despesas: React.FC<{
       ...INITIAL_DESPESA,
       id: crypto.randomUUID(),
     });
+    setNumParcelas(1);
   }, [modoEdicao, novaDespesa, validarDespesa, onDespesasUpdate, despesas]);
 
   const calcularTotal = useMemo(
@@ -147,82 +312,51 @@ const Despesas: React.FC<{
     [despesas]
   );
 
-  const handleParcelasChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const numParcelas = Number.parseInt(e.target.value, 10);
-    const valorParcela = novaDespesa.valor / numParcelas;
-    const parcelas: { valor: number; data: string; }[] = [];
-    const currentDate = new Date(novaDespesa.dataVencimento);
-
-    for (let i = 0; i < numParcelas; i++) {
-      const nextMonth = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
-      parcelas.push({
-        valor: valorParcela,
-        data: nextMonth.toISOString().split("")[0], // Data de vencimento das parcelas
-      });
-    }
-
-    setNovaDespesa((prev) => ({
-      ...prev,
-      parcelas,
-    }));
-  };
-
   const renderInputs = () => (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-1 text-[#9aa2ad]">
-      <input
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-[#9aa2ad]">
+      <InputField
         type="text"
         placeholder="Descrição"
         value={novaDespesa.descricao}
-        onChange={(e) =>
-          setNovaDespesa((prev) => ({
-            ...prev,
-            descricao: e.target.value,
-          }))
-        }
-        className="w-full p-2 border rounded focus:ring-2 focus:border-hidden"
+        onChange={(value) => handleDespesaChange("descricao", value)}
       />
-      <input
+      <InputField
         type="number"
         placeholder="Valor"
         value={novaDespesa.valor}
-        onChange={(e) =>
-          setNovaDespesa((prev) => ({
-            ...prev,
-            valor: Number(e.target.value),
-          }))
-        }
-        className="w-full p-2 border rounded focus:ring-2 focus:border-hidden"
+        onChange={(value) => handleDespesaChange("valor", Number(value))}
       />
-      <input
+      <InputField
         type="date"
         value={novaDespesa.dataVencimento}
-        onChange={(e) =>
-          setNovaDespesa((prev) => ({
-            ...prev,
-            dataVencimento: e.target.value,
-          }))
-        }
-        className="w-full p-2 border rounded focus:ring-2 focus:border-hidden"
+        onChange={(value) => handleDespesaChange("dataVencimento", value)}
       />
       <select
-        value={novaDespesa.status}
-        onChange={(e) =>
-          setNovaDespesa((prev) => ({
-            ...prev,
-            status: e.target.value as Despesa["status"],
-          }))
-        }
+        value={novaDespesa.modo}
+        onChange={(e) => handleDespesaChange("modo", e.target.value)}
         className="w-full p-2 border rounded focus:ring-2 focus:border-hidden"
       >
-        <option value="Pendente" className="text-black">
-          Pendente
-        </option>
-        <option value="Pago" className="text-black">
-          Pago
-        </option>
-        <option value="Atrasado" className="text-black">
-          Atrasado
-        </option>
+        <option value="À Vista">À Vista</option>
+        <option value="Parcelado">Parcelado</option>
+      </select>
+
+      {novaDespesa.modo === "Parcelado" && (
+        <InputField
+          type="number"
+          placeholder="Número de Parcelas"
+          value={numParcelas}
+          onChange={handleParcelasChange}
+        />
+      )}
+
+      <select
+        value={novaDespesa.status}
+        onChange={(e) => handleDespesaChange("status", e.target.value)}
+        className="w-full p-2 border rounded focus:ring-2 focus:border-hidden"
+      >
+        <option value="Pendente">Pendente</option>
+        <option value="Pago">Pago</option>
+        <option value="Atrasado">Atrasado</option>
       </select>
 
       <button
@@ -242,33 +376,6 @@ const Despesas: React.FC<{
           </>
         )}
       </button>
-
-      <select
-        value={novaDespesa.modo}
-        onChange={(e) =>
-          setNovaDespesa((prev) => ({
-            ...prev,
-            modo: e.target.value as Despesa["modo"],
-          }))
-        }
-        className="w-full p-2 border rounded focus:ring-2 focus:border-hidden"
-      >
-        <option value="À Vista" className="text-black">
-          À Vista
-        </option>
-        <option value="Parcelado" className="text-black">
-          Parcelado
-        </option>
-      </select>
-
-      {novaDespesa.modo === "Parcelado" && (
-        <input
-          type="number"
-          placeholder="Número de Parcelas"
-          onChange={handleParcelasChange}
-          className="w-full p-2 border rounded focus:ring-2 focus:border-hidden"
-        />
-      )}
     </div>
   );
 
@@ -280,23 +387,37 @@ const Despesas: React.FC<{
           <td className="px-6 py-4 whitespace-nowrap">
             {formatCurrency(despesa.valor)}
           </td>
-          <td className="px-6 py-4 whitespace-nowrap">
+          <td className="px-6 py-4 whitespace-normal">
             {despesa.modo === "Parcelado" && despesa.parcelas
               ? despesa.parcelas.map((parcela, index) => (
-                  <div key={index}>
-                    {formatCurrency(parcela.valor)} - {formatDate(parcela.data)}
+                <div key={`${parcela.valor}-${parcela.data}-${index}`} className="mb-1">
+                    {`Parcela ${index + 1}: ${formatCurrency(
+                      parcela.valor
+                    )} - ${formatDate(parcela.data)}`}
                   </div>
                 ))
               : formatDate(despesa.dataVencimento)}
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
-            <span
-              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                STATUS_COLORS[despesa.status]
-              }`}
-            >
-              {despesa.status}
-            </span>
+            {despesa.modo === "Parcelado" && despesa.parcelas ? (
+              despesa.parcelas.map((parcela, index) => (
+                <div key={`${parcela.valor}-${parcela.data}-${index}`} className="mb-1">
+                  <StatusSelect
+                    value={parcela.status}
+                    onChange={(novoStatus) =>
+                      handleParcelaStatusChange(despesa.id, index, novoStatus)
+                    }
+                  />
+                </div>
+              ))
+            ) : (
+              <StatusSelect
+                value={despesa.status}
+                onChange={(novoStatus) =>
+                  handleParcelaStatusChange(despesa.id, null, novoStatus)
+                }
+              />
+            )}
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="flex gap-2">
@@ -345,10 +466,16 @@ const Despesas: React.FC<{
             <div className="rounded-md shadow mb-4">{renderInputs()}</div>
 
             <div className="bg-white rounded-lg shadow overflow-hidden">
-              <table className="w-full">
+              <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-white">
                   <tr>
-                    {["Descrição", "Valor", "Vencimento", "Status", "Ações"].map((header) => (
+                    {[
+                      "Descrição",
+                      "Valor",
+                      "Vencimento",
+                      "Status",
+                      "Ações",
+                    ].map((header) => (
                       <th
                         key={header}
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"

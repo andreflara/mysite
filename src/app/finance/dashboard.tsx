@@ -17,14 +17,21 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+
+interface Parcela {
+  valor: number;
+  data: string;
+}
+
 // Tipos já definidos anteriormente
 interface Despesa {
   id: string;
   descricao: string;
   valor: number;
-  status: "Pago" | "Pendente" | "Atrasado";
-  
+  status: string;
+  modo: "Parcelado" | "À Vista";
   dataVencimento: string;
+  parcelas?: Parcela[];
 }
 
 interface Receita {
