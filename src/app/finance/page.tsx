@@ -5,7 +5,8 @@ import Despesas from "./despesas";
 import Navegacao from "@/components/nav-section";
 import Receitas from "./receitas";
 import Dashboard from "./dashboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import SearchFilterComponent from "@/components/filtroano";
 
 // Align types with the component implementations
 interface Parcela {
@@ -13,6 +14,7 @@ interface Parcela {
   data: string;
   status: "Pago" | "Pendente" | "Atrasado";
 }
+
 
 interface Despesa {
   id: string;
@@ -34,6 +36,7 @@ interface Receita {
 const Layout: React.FC = () => {
   const [despesas, setDespesas] = useState<Despesa[]>([]);
   const [receitas, setReceitas] = useState<Receita[]>([]);
+  const [filteredDespesas, setFilteredDespesas] = useState<Despesa[]>([]);
 
   // Remove unused totalDespesas parameter and fix types
   const handleDespesasUpdate = (newDespesas: Despesa[]) => {
@@ -45,6 +48,11 @@ const Layout: React.FC = () => {
     setReceitas(newReceitas);
   };
 
+   // Sincroniza o estado filteredDespesas com o estado despesas
+   useEffect(() => {
+    setFilteredDespesas(despesas);
+  }, [despesas]);
+
   return (
     <div className="bg-black p-6 md:p-12 min-h-screen">
       <div className="max-w-6xl mx-auto">
@@ -52,12 +60,15 @@ const Layout: React.FC = () => {
         <h1 className="text-4xl font-bold mb-8 text-white">
           Gestão de Finanças
         </h1>
+        <SearchFilterComponent 
+        despesas={filteredDespesas} 
+        onFilteredDespesas={setFilteredDespesas} 
+      />
 
         <div className="items-center grid gap-4">
           <Despesas 
-            initialDespesas={despesas} 
-            onDespesasUpdate={handleDespesasUpdate} 
-          />
+            initialDespesas={filteredDespesas}
+            onDespesasUpdate={handleDespesasUpdate} despesas={[]}          />
           <Receitas 
             initialReceitas={receitas} 
             onReceitasUpdate={handleReceitasUpdate}

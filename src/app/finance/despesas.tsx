@@ -21,7 +21,7 @@ interface Despesa {
   id: string;
   descricao: string;
   valor: number;
-  status: "Pago" | "Pendente" | "Atrasado" ;
+  status: "Pago" | "Pendente" | "Atrasado";
   modo: "Parcelado" | "À Vista";
   dataVencimento: string;
   parcelas?: Parcela[];
@@ -132,11 +132,17 @@ const StatusSelect = React.memo<{
 ));
 StatusSelect.displayName = "StatusSelect";
 
+interface DespesasProps {
+  despesas: Despesa[]; // Lista de despesas filtradas
+  initialDespesas?: Despesa[]; // Se você vai passar a lista inicial de despesas
+  onDespesasUpdate?: (despesas: Despesa[]) => void; // Função callback para atualizar as despesas
+}
+
 // Main Component
-const Despesas: React.FC<{
-  initialDespesas?: Despesa[];
-  onDespesasUpdate?: (despesas: Despesa[]) => void;
-}> = ({ initialDespesas = [], onDespesasUpdate }) => {
+const Despesas: React.FC<DespesasProps> = ({
+  initialDespesas = [],
+  onDespesasUpdate,
+}) => {
   // State Management
   const [despesas, setDespesas] = useState<Despesa[]>(initialDespesas);
   const [novaDespesa, setNovaDespesa] = useState<Despesa>({
@@ -147,6 +153,14 @@ const Despesas: React.FC<{
   const [modoEdicao, setModoEdicao] = useState<string | null>(null);
   const [showDespesas, setShowDespesas] = useState(false);
   const [numParcelas, setNumParcelas] = useState<number>(1);
+  const [searchTerm, setSearchTerm] = useState<string>(""); // Estado para armazenar o termo de pesquisa
+
+  // Filtrando as despesas com base no termo de pesquisa
+  const filteredDespesas = useMemo(() => {
+    return despesas.filter((despesa) =>
+      despesa.descricao.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [despesas, searchTerm]);
 
   // Validation
   const validarDespesa = useCallback((despesa: Despesa): boolean => {
@@ -171,56 +185,6 @@ const Despesas: React.FC<{
     }
     return true;
   }, []);
-
-  const handleParcelaStatusChange = useCallback(
-    (
-      despesaId: string,
-      parcelaIndex: number | null, 
-      novoStatus: "Pago" | "Pendente" | "Atrasado"
-    ) => {
-      setDespesas((prevDespesas) =>
-        prevDespesas.map((despesa) => {
-          if (despesa.id === despesaId) {
-            if (despesa.modo === "Parcelado" && despesa.parcelas) {
-              // Lógica para atualizar o status de uma parcela
-              const novasParcelas = [...despesa.parcelas];
-              if (parcelaIndex !== null) {
-                novasParcelas[parcelaIndex] = {
-                  ...novasParcelas[parcelaIndex],
-                  status: novoStatus,
-                };
-              }
-
-              // Atualizando o status da despesa com base nas parcelas
-              const allPago = novasParcelas.every((p) => p.status === "Pago");
-              const hasAtrasado = novasParcelas.some(
-                (p) => p.status === "Atrasado"
-              );
-
-              return {
-                ...despesa,
-                parcelas: novasParcelas,
-                status: allPago
-                  ? "Pago"
-                  : hasAtrasado
-                  ? "Atrasado"
-                  : "Pendente",
-              };
-            }
-            if (despesa.modo === "À Vista") {
-              // Lógica para atualizar o status da despesa no modo "À Vista"
-              return {
-                ...despesa,
-                status: novoStatus, // No "À Vista", apenas alteRA o status diretamente
-              };
-            }
-          }
-          return despesa;
-        })
-      );
-    },
-    []
-  );
 
   const handleDespesaChange = useCallback(
     (field: keyof Despesa, value: Despesa[keyof Despesa]) => {
@@ -307,11 +271,6 @@ const Despesas: React.FC<{
     setNumParcelas(1);
   }, [modoEdicao, novaDespesa, validarDespesa, onDespesasUpdate, despesas]);
 
-  const calcularTotal = useMemo(
-    () => despesas.reduce((total, despesa) => total + despesa.valor, 0),
-    [despesas]
-  );
-
   const renderInputs = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-[#9aa2ad]">
       <InputField
@@ -381,7 +340,7 @@ const Despesas: React.FC<{
 
   const renderTableRows = () => (
     <tbody className="bg-slate-50 divide-y text-black divide-gray-200">
-      {despesas.map((despesa) => (
+      {filteredDespesas.map((despesa) => (
         <tr key={despesa.id} className="hover:bg-gray-100">
           <td className="px-6 py-4 whitespace-nowrap">{despesa.descricao}</td>
           <td className="px-6 py-4 whitespace-nowrap">
@@ -390,7 +349,10 @@ const Despesas: React.FC<{
           <td className="px-6 py-4 whitespace-normal">
             {despesa.modo === "Parcelado" && despesa.parcelas
               ? despesa.parcelas.map((parcela, index) => (
-                <div key={`${parcela.valor}-${parcela.data}-${index}`} className="mb-1">
+                  <div
+                    key={`${parcela.valor}-${parcela.data}-${index}`}
+                    className="mb-1"
+                  >
                     {`Parcela ${index + 1}: ${formatCurrency(
                       parcela.valor
                     )} - ${formatDate(parcela.data)}`}
@@ -401,11 +363,14 @@ const Despesas: React.FC<{
           <td className="px-6 py-4 whitespace-nowrap">
             {despesa.modo === "Parcelado" && despesa.parcelas ? (
               despesa.parcelas.map((parcela, index) => (
-                <div key={`${parcela.valor}-${parcela.data}-${index}`} className="mb-1">
+                <div
+                  key={`${parcela.valor}-${parcela.data}-${index}`}
+                  className="mb-1"
+                >
                   <StatusSelect
                     value={parcela.status}
                     onChange={(novoStatus) =>
-                      handleParcelaStatusChange(despesa.id, index, novoStatus)
+                      console.log(`Status da Parcela atualizado: ${novoStatus}`)
                     }
                   />
                 </div>
@@ -414,7 +379,7 @@ const Despesas: React.FC<{
               <StatusSelect
                 value={despesa.status}
                 onChange={(novoStatus) =>
-                  handleParcelaStatusChange(despesa.id, null, novoStatus)
+                  console.log(`Status da Despesa atualizado: ${novoStatus}`)
                 }
               />
             )}
@@ -423,15 +388,15 @@ const Despesas: React.FC<{
             <div className="flex gap-2">
               <button
                 type="button"
-                onClick={() => editarDespesa(despesa.id)}
                 className="text-blue-600 hover:text-blue-900"
+                onClick={() => editarDespesa(despesa.id)}
               >
                 Editar
               </button>
               <button
                 type="button"
-                onClick={() => removerDespesa(despesa.id)}
                 className="text-red-600 hover:text-red-900 flex items-center gap-1"
+                onClick={() => removerDespesa(despesa.id)}
               >
                 <Trash2 className="h-4 w-4" />
                 Remover
@@ -444,10 +409,7 @@ const Despesas: React.FC<{
   );
 
   return (
-    <div
-      className="border border-gray-600 rounded-md"
-      aria-expanded={showDespesas}
-    >
+    <div className="border border-gray-600 rounded-md">
       <button
         type="button"
         className="hover:bg-gray-700 h-full w-full text-white p-4 cursor-pointer flex justify-between items-center"
@@ -465,6 +427,15 @@ const Despesas: React.FC<{
 
             <div className="rounded-md shadow mb-4">{renderInputs()}</div>
 
+            {/* Campo de Pesquisa */}
+            <div className="mb-4">
+              <InputField
+                type="text"
+                placeholder="Pesquisar despesas..."
+                value={searchTerm}
+                onChange={(value) => setSearchTerm(value)}
+              />
+            </div>
             <div className="bg-white rounded-lg shadow overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-white">
@@ -485,14 +456,22 @@ const Despesas: React.FC<{
                     ))}
                   </tr>
                 </thead>
+
                 {renderTableRows()}
+
                 <tfoot className="bg-gray-50">
                   <tr>
                     <td
                       colSpan={2}
                       className="px-6 py-4 text-sm font-medium text-gray-900"
                     >
-                      Total: {formatCurrency(calcularTotal)}
+                      Total:{" "}
+                      {formatCurrency(
+                        despesas.reduce(
+                          (total, despesa) => total + despesa.valor,
+                          0
+                        )
+                      )}
                     </td>
                     <td colSpan={3} />
                   </tr>
