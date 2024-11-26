@@ -41,8 +41,8 @@ const MenuLink = ({ href, label }: { href: string; label: string }) => (
 
 export default function HomePage() {
   return (
-    <main className="font-mono flex  h-screen items-center justify-center bg-black text-white">
-      <div className="flex flex-col gap-8">
+    <main className="font-mono flex  h-screen items-center justify-center bg-gradient-to-br from-gray-900 to-black min-h-screen text-white">
+      <div className="flex flex-col gap-8 max-w-6xl container mx-auto px-4 py-8">
         {/* Header */}
         <header className="flex flex-col">
           <h1 className="text-4xl font-bold tracking-tight">Andre Fernando</h1>
@@ -63,7 +63,7 @@ export default function HomePage() {
         </nav>
 
         {/* Links Section */}
-        <section>
+        {/* <section>
           <h2 className="mb-2 text-lg uppercase tracking-wider text-gray-400">
             Outros Links
           </h2>
@@ -77,7 +77,7 @@ export default function HomePage() {
             <Button href="#" label="MediaKit" />
             <Button href="#" label="YouTube" />
           </div>
-        </section>
+        </section> */}
 
         {/* Footer */}
         <footer className="border-t pt-4">

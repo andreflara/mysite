@@ -11,7 +11,7 @@ import SearchFilterComponent from "@/components/filtroano";
 // Align types with the component implementations
 interface Parcela {
   valor: number;
-  data: string;
+  dataVencimentoParcela: string;
   status: "Pago" | "Pendente" | "Atrasado";
 }
 
@@ -54,16 +54,12 @@ const Layout: React.FC = () => {
   }, [despesas]);
 
   return (
-    <div className="bg-black p-6 md:p-12 min-h-screen">
-      <div className="max-w-6xl mx-auto">
+    <div className="bg-gradient-to-br from-gray-900 to-black min-h-screen text-white">
+      <div className="container mx-auto px-4 py-8">
         <Navegacao />
         <h1 className="text-4xl font-bold mb-8 text-white">
           Gestão de Finanças
         </h1>
-        <SearchFilterComponent 
-        despesas={filteredDespesas} 
-        onFilteredDespesas={setFilteredDespesas} 
-      />
 
         <div className="items-center grid gap-4">
           <Despesas 

@@ -20,7 +20,7 @@ import {
 
 interface Parcela {
   valor: number;
-  data: string;
+  dataVencimentoParcela: string;
 }
 
 // Tipos já definidos anteriormente

@@ -7,14 +7,14 @@ import Link from "next/link";
 
 export default function Projects() {
   return (
-    <div className=" bg-black text-white p-6 md:p-12 min-h-screen">
-      <div className="max-w-6xl mx-auto">
+    <div className=" bg-gradient-to-br from-gray-900 to-black text-white p-6 md:p-12 min-h-screen">
+      <div className="container mx-auto px-4 py-8">
         <Navegacao />
         <div>
           <h1 className="text-4xl font-bold mb-8">Projetos</h1>
         </div>
-        <div className="space-y-8">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="space-y-">
+          <div className="grid gap-6 sm:grid-cols-3 lg:grid-cols-4">
             <div>
               <a
                 target="_blank"

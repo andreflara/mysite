@@ -13,7 +13,7 @@ import {
 // Types
 interface Parcela {
   valor: number;
-  data: string;
+  dataVencimentoParcela: string;
   status: "Pago" | "Pendente" | "Atrasado";
 }
 
@@ -71,7 +71,7 @@ const generateParcelasForDespesa = (
         i === numParcelas - 1
           ? valor - valorParcela * (numParcelas - 1)
           : valorParcela,
-      data: nextMonth.toISOString().split("T")[0],
+      dataVencimentoParcela: nextMonth.toISOString().split("T")[0],
       status: "Pendente",
     });
   }
@@ -241,6 +241,27 @@ const Despesas: React.FC<DespesasProps> = ({
     [onDespesasUpdate, despesas]
   );
 
+  const atualizarStatusDespesa = useCallback(
+    (id: string, novoStatus: "Pago" | "Pendente" | "Atrasado", indexParcela?: number) => {
+      setDespesas((prevDespesas) =>
+        prevDespesas.map((despesa) => {
+          if (despesa.id === id) {
+            if (typeof indexParcela === "number" && despesa.parcelas) {
+              // Atualiza uma parcela específica
+              const parcelasAtualizadas = [...despesa.parcelas];
+              parcelasAtualizadas[indexParcela].status = novoStatus;
+              return { ...despesa, parcelas: parcelasAtualizadas };
+            }
+            // Atualiza o status da despesa principal
+            return { ...despesa, status: novoStatus };
+          }
+          return despesa;
+        })
+      );
+    },
+    []
+  );
+
   const editarDespesa = useCallback(
     (id: string) => {
       const despesa = despesas.find((d) => d.id === id);
@@ -350,12 +371,12 @@ const Despesas: React.FC<DespesasProps> = ({
             {despesa.modo === "Parcelado" && despesa.parcelas
               ? despesa.parcelas.map((parcela, index) => (
                   <div
-                    key={`${parcela.valor}-${parcela.data}-${index}`}
+                    key={`${parcela.valor}-${parcela.dataVencimentoParcela}-${index}`}
                     className="mb-1"
                   >
                     {`Parcela ${index + 1}: ${formatCurrency(
                       parcela.valor
-                    )} - ${formatDate(parcela.data)}`}
+                    )} - ${formatDate(parcela.dataVencimentoParcela)}`}
                   </div>
                 ))
               : formatDate(despesa.dataVencimento)}
@@ -364,13 +385,13 @@ const Despesas: React.FC<DespesasProps> = ({
             {despesa.modo === "Parcelado" && despesa.parcelas ? (
               despesa.parcelas.map((parcela, index) => (
                 <div
-                  key={`${parcela.valor}-${parcela.data}-${index}`}
+                  key={`${parcela.valor}-${parcela.dataVencimentoParcela}-${index}`}
                   className="mb-1"
                 >
                   <StatusSelect
                     value={parcela.status}
                     onChange={(novoStatus) =>
-                      console.log(`Status da Parcela atualizado: ${novoStatus}`)
+                      atualizarStatusDespesa(despesa.id, novoStatus, index)
                     }
                   />
                 </div>
@@ -379,7 +400,7 @@ const Despesas: React.FC<DespesasProps> = ({
               <StatusSelect
                 value={despesa.status}
                 onChange={(novoStatus) =>
-                  console.log(`Status da Despesa atualizado: ${novoStatus}`)
+                  atualizarStatusDespesa(despesa.id, novoStatus)
                 }
               />
             )}
