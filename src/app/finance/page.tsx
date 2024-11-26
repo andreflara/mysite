@@ -6,8 +6,6 @@ import Navegacao from "@/components/nav-section";
 import Receitas from "./receitas";
 import Dashboard from "./dashboard";
 import { useEffect, useState } from "react";
-import SearchFilterComponent from "@/components/filtroano";
-
 // Align types with the component implementations
 interface Parcela {
   valor: number;
