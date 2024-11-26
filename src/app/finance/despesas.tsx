@@ -442,8 +442,8 @@ const Despesas: React.FC<DespesasProps> = ({
       </button>
 
       {showDespesas && (
-        <div id="despesas-section" className="p-4">
-          <div className="max-w-6xl mx-auto">
+        <div id="despesas-section" className="p-4 ">
+          <div className="mx-auto">
             {erro && <Alert message={erro} />}
 
             <div className="rounded-md shadow mb-4">{renderInputs()}</div>
