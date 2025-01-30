@@ -5,6 +5,7 @@ import {
   faChevronRight,
   faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import Image from 'next/image';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Profile() {
@@ -28,7 +29,7 @@ export default function Profile() {
           {/* Profile Card */}
           <div className="rounded-xl bg-black border border-gray-700 shadow-lg p-3">
             <div className="relative mb-6">
-              <img
+              <Image
                 src="https://avatars.githubusercontent.com/u/99347254?v=4"
                 alt="Profile"
                 className="w-full h-[300px] object-cover rounded-lg"
