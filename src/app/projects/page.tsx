@@ -25,7 +25,7 @@ export default function Projects() {
                 <div className="rounded-xl  bg-black border border-gray-700 shadow-lg hover:shadow-2xl transition-shadow duration-300 relative overflow-hidden group">
                   <div className="relative">
                     <img
-                      src="https://private-user-images.githubusercontent.com/99347254/388698857-fccfa93f-cdf1-4476-964d-f90c8e15414d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzIyMjQ0MzYsIm5iZiI6MTczMjIyNDEzNiwicGF0aCI6Ii85OTM0NzI1NC8zODg2OTg4NTctZmNjZmE5M2YtY2RmMS00NDc2LTk2NGQtZjkwYzhlMTU0MTRkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDExMjElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQxMTIxVDIxMjIxNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQwMGIyMDUxZDRhNWFhNTRiNWQwNjcyMDE2YzE4MWE2MGFjNzM5OTJhMTg1NjQyZTVlZWNhZTk4ZTcxNGZiZTEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.ySHikGxCki8sT9oMp0j7CwLs5O-jHU89BGYnMNd4djA"
+                      src="https://private-user-images.githubusercontent.com/99347254/388698857-fccfa93f-cdf1-4476-964d-f90c8e15414d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzgyNDEzMTksIm5iZiI6MTczODI0MTAxOSwicGF0aCI6Ii85OTM0NzI1NC8zODg2OTg4NTctZmNjZmE5M2YtY2RmMS00NDc2LTk2NGQtZjkwYzhlMTU0MTRkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTAxMzAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwMTMwVDEyNDMzOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTNlMWFiNjNmYjZlYWJlMzk1NDk1YjU2ZGJhZTMyMDljMDNmODdmOTc4YjM2ZWI2M2JlOTU1MTIyYzUzYmRiM2QmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.7q264KEqrMMONpUh-AgYfR5BfBRzi03vUrJnyfIl8co"
                       alt="Suporte Unimed"
                       className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                     />
@@ -125,61 +125,6 @@ export default function Projects() {
                 </div>
               </Link>
             </div>
-            {/* <div>
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://suporteunimed.vercel.app/"
-                className="block"
-              >
-                <div className="rounded-xl  bg-black border border-gray-700 shadow-lg hover:shadow-2xl transition-shadow duration-300 relative overflow-hidden group">
-                  <div className="relative">
-                    <img
-                      src="./project-cover/suporteunimed.png"
-                      alt="Suporte Unimed"
-                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="text-gray-200 w-8 h-8"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <title>proximo</title>
-                        <path d="M15 3h6v6" />
-                        <path d="M10 14 21 3" />
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-                      Suporte Unimed
-                    </h2>
-                    <p className="text-gray-400">
-                      Site com links rápidos para suporte externo da equipe de
-                      suporte técnico.
-                    </p>
-                  </div>
-                  <div className="p-3 flex items-center justify-between">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center text-primary">
-                      Ver Projeto
-                      <FontAwesomeIcon
-                        className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1"
-                        icon={faChevronRight}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </div> */}
           </div>
         </div>
       </div>

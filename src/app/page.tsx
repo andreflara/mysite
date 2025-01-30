@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { IconBrandGithub, IconBrandLinkedin } from "@tabler/icons-react";
+import { IconBrandGithub, IconBrandLinkedin, IconBrandYoutube } from "@tabler/icons-react";
 
 const Button = ({
   href,
@@ -57,7 +57,7 @@ export default function HomePage() {
             Menu
           </h2>
           <div>
-            <MenuLink href="#" label="Sobre" />
+            <MenuLink href="/about" label="Sobre" />
             <MenuLink href="/projects" label="Projetos" />
           </div>
         </nav>
@@ -91,6 +91,11 @@ export default function HomePage() {
               href="https://linkedin.com/in/andrefernando"
               title="LinkedIn"
               icon={<IconBrandLinkedin stroke={2} />}
+            />
+            <Button
+              href="https://youtube.com/"
+              title="Youtube"
+              icon={<IconBrandYoutube stroke={2} />}
             />
           </div>
         </footer>
