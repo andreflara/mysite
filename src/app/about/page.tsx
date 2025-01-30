@@ -74,7 +74,7 @@ export default function Profile() {
             <div className="rounded-xl bg-black border border-gray-700 shadow-lg p-6">
               <h3 className="text-xl font-bold mb-4">Interests</h3>
               <div className="flex flex-wrap gap-2">
-                {skills.map((skill, index) => (
+                {skills.map((skill) => (
                   <span
                     key={skill}
                     className="px-4 py-2 rounded-full bg-gray-800 text-gray-300 text-sm"
