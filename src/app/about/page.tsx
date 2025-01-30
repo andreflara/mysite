@@ -6,7 +6,6 @@ import {
   faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { DotIcon } from "lucide-react";
 
 export default function Profile() {
   const skills = [
