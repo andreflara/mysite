@@ -1,11 +1,8 @@
 "use client";
 
 import Navegacao from "@/components/nav-section";
-import {
-  faChevronRight,
-  faMapMarkerAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import Image from 'next/image';
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Profile() {
@@ -147,9 +144,7 @@ export default function Profile() {
                 Assistente administrativo/Aprendiz
               </h3>
               <div className="flex items-center text-gray-400 text-sm space-x-1">
-                <span className="font-medium text-blue-400">
-                Vivante
-                </span>
+                <span className="font-medium text-blue-400">Vivante</span>
                 <span>•</span>
                 <span>Curitiba/PR</span>
               </div>
