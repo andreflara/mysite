@@ -1,30 +1,11 @@
+import React from "react";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { IconBrandGithub, IconBrandLinkedin, IconBrandYoutube } from "@tabler/icons-react";
-
-const Button = ({
-  href,
-  label,
-  title,
-  icon,
-}: {
-  href: string;
-  label?: string;
-  title?: string;
-  icon?: JSX.Element;
-}) => (
-  <a
-    target="_blank"
-    rel="noopener noreferrer"
-    href={href}
-    title={title}
-    className="flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-xs font-medium transition-colors hover:bg-gray-800 hover:text-white h-8 px-3 border border-gray-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-500"
-  >
-    {icon}
-    {label}
-  </a>
-);
+import {
+  IconBrandGithub,
+  IconBrandLinkedin,
+  IconBrandYoutube,
+} from "@tabler/icons-react";
+import { ChevronRight } from "lucide-react";
 
 const MenuLink = ({ href, label }: { href: string; label: string }) => (
   <Link
@@ -32,74 +13,63 @@ const MenuLink = ({ href, label }: { href: string; label: string }) => (
     className="group flex items-center justify-between rounded-lg px-3 py-2 transition-colors hover:bg-gray-700"
   >
     <span className="font-md">{label}</span>
-    <FontAwesomeIcon
-      className="h-4 w-4 transition-transform group-hover:translate-x-1"
-      icon={faChevronRight}
-    />
+    <ChevronRight />
   </Link>
 );
 
 export default function HomePage() {
   return (
-    <main className="font-mono flex  h-screen items-center justify-center bg-gradient-to-br from-gray-900 to-black min-h-screen text-white">
-      <div className="flex flex-col gap-8 max-w-6xl container mx-auto px-4 py-8">
-        {/* Header */}
-        <header className="flex flex-col">
-          <h1 className="text-4xl font-bold tracking-tight">Andre Fernando</h1>
+    <div className="bg-gradient-to-br from-gray-900 to-black text-white p-6 md:p-12 min-h-screen flex items-center justify-center">
+      <div className="container mx-auto px-4 py-8">
+        <header className="mb-8">
+          <h1 className="text-4xl font-bold">Andre Fernando</h1>
           <p className="text-lg text-gray-400">
             Aprendendo Desenvolvimento Web
           </p>
         </header>
 
-        {/* Navigation */}
-        <nav>
-          <h2 className="text-lg uppercase tracking-wider text-gray-400">
+        <nav className="mb-8">
+          <h2 className="text-lg uppercase tracking-wider text-gray-400 mb-2">
             Menu
           </h2>
-          <div>
+          <div className="grid gap-4">
             <MenuLink href="/about" label="Sobre" />
             <MenuLink href="/projects" label="Projetos" />
           </div>
         </nav>
 
-        {/* Links Section */}
-        {/* <section>
-          <h2 className="mb-2 text-lg uppercase tracking-wider text-gray-400">
-            Outros Links
-          </h2>
-          <div className="mb-4 px-4">
-            <Button
-              href="https://suporteunimed.vercel.app/"
-              label="Suporte Unimed"
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4 px-4">
-            <Button href="#" label="MediaKit" />
-            <Button href="#" label="YouTube" />
-          </div>
-        </section> */}
-
-        {/* Footer */}
         <footer className="border-t pt-4">
-          <div className="flex justify-center w-full gap-2">
-            <Button
+          <div className="flex justify-center gap-4">
+            <a
               href="https://github.com/oandrezito"
+              target="_blank"
+              rel="noopener noreferrer"
               title="Github"
-              icon={<IconBrandGithub stroke={2} />}
-            />
-            <Button
+              className="hover:text-gray-400 transition"
+            >
+              <IconBrandGithub size={28} />
+            </a>
+            <a
               href="https://linkedin.com/in/andrefernando"
+              target="_blank"
+              rel="noopener noreferrer"
               title="LinkedIn"
-              icon={<IconBrandLinkedin stroke={2} />}
-            />
-            <Button
+              className="hover:text-gray-400 transition"
+            >
+              <IconBrandLinkedin size={28} />
+            </a>
+            <a
               href="https://youtube.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               title="Youtube"
-              icon={<IconBrandYoutube stroke={2} />}
-            />
+              className="hover:text-gray-400 transition"
+            >
+              <IconBrandYoutube size={28} />
+            </a>
           </div>
         </footer>
       </div>
-    </main>
+    </div>
   );
 }

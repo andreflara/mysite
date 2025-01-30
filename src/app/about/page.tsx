@@ -5,7 +5,9 @@ import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  Car,
   Clapperboard,
+  Guitar,
   LaptopMinimal,
   MapPin,
   Music4,
@@ -14,12 +16,15 @@ import {
 } from "lucide-react";
 
 const preferences = [
-  { Icon: Music4, title: "Música", value: "Lofi" },
   { Icon: MapPin, title: "Cidade", value: "Curitiba, PR" },
-  { Icon: Clapperboard, title: "Filme", value: "Star Wars" },
-  { Icon: Tv, title: "Série", value: "Obi-Wan Kenobi" },
   { Icon: Pizza, title: "Comida", value: "Pizza" },
   { Icon: LaptopMinimal, title: "Sistema", value: "Windows / Linux" },
+  { Icon: Clapperboard, title: "Filme", value: "Star Wars" },
+  { Icon: Tv, title: "Série", value: "Obi-Wan Kenobi" },
+  { Icon: Music4, title: "Música", value: "Lofi" },
+  { Icon: Guitar , title: "Instrumento", value: "Contrabaixo" },
+  { Icon: Car, title: "Carro", value: "Fusca 84" },
+
 ];
 
 const experiences = [
@@ -55,7 +60,7 @@ export default function Profile() {
 
         <div className="grid gap-6 md:grid-cols-[350px_1fr] items-start">
           {/* Profile Card */}
-          <div className="rounded-xl bg-opacity-100 border border-gray-700 shadow-lg p-6 flex flex-col">
+          <div className="rounded-xl bg-gray-950 border border-gray-700 shadow-lg p-6 flex flex-col">
             <div
               className="relative mb-2 w-full"
               style={{ aspectRatio: "2 / 1" }}
@@ -79,7 +84,7 @@ export default function Profile() {
           {/* Bio + Interests Container */}
           <div className="space-y-6 flex flex-col">
             {/* Bio Section */}
-            <div className="rounded-xl bg-opacity-100 border border-gray-700 shadow-lg p-7">
+            <div className="rounded-xl bg-gray-950 border border-gray-700 shadow-lg p-7">
               <h3 className="text-xl font-bold mb-4">Bio</h3>
               <p className="text-gray-400 leading-relaxed">
                 Sou o <strong>André Fernando</strong>, profissional de TI
@@ -101,9 +106,9 @@ export default function Profile() {
             </div>
 
             {/* Preferences Section */}
-            <div className="rounded-xl bg-opacity-100 border border-gray-700 shadow-lg p-7">
+            <div className="rounded-xl bg-gray-950 border border-gray-700 shadow-lg p-7">
               <h3 className="text-xl font-bold mb-2">Preferências</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-sm">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
                 {preferences.map(({ Icon, title, value }) => (
                   <div key={title} className="flex flex-col space-y-1">
                     <div className="flex items-center space-x-2">
@@ -126,13 +131,13 @@ export default function Profile() {
               key={exp.title}
               className="relative pl-8 border-l-2 border-gray-700"
             >
-              <div className="absolute w-4 h-4 bg-blue-500 rounded-full -left-[9px] mt-1.5" />
+              <div className="absolute w-3 h-3 bg-gray-100 rounded-full -left-[7px] mt-1.5" />
               <div className="mb-1">
                 <h3 className="text-lg font-semibold text-white">
                   {exp.title}
                 </h3>
                 <div className="flex items-center text-gray-400 text-sm space-x-1">
-                  <span className="font-medium text-blue-400">
+                  <span className="font-medium text-gray-300">
                     {exp.company}
                   </span>
                   <span>•</span>

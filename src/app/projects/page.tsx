@@ -1,133 +1,77 @@
 import React from "react";
 import Navegacao from "@/components/nav-section";
-import {
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ChevronRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
+const projects = [
+  {
+    id: 1,
+    title: "Suporte Unimed",
+    description:
+      "Site com links rápidos para suporte externo da equipe de suporte técnico.",
+    image: "/suporteunimed.png",
+    link: "https://suporteunimed.vercel.app/",
+  },
+  {
+    id: 2,
+    title: "dev.finance$",
+    description:
+      "O Dev.Finance é um projeto simples para auxiliar no controle das finanças.",
+    image: "/devfinance.png",
+    link: "https://oandrezito.github.io/dev.finances/",
+  },
+  {
+    id: 3,
+    title: "Escola Bíblica de Obreiros",
+    description:
+      "Lading Page criada para a Escola Bíblica de Obreiros da Igreja Assembleia de Deus em Curitiba.",
+    image: "/portalebo.png",
+    link: "https://lp-ebo.vercel.app/",
+  },
+];
+
 export default function Projects() {
   return (
-    <div className=" bg-gradient-to-br from-gray-900 to-black text-white p-6 md:p-12 min-h-screen">
+    <div className="bg-gradient-to-br from-gray-900 to-black text-white p-6 md:p-12 min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <Navegacao />
-        <div>
-          <h1 className="text-4xl font-bold mb-8">Projetos</h1>
-        </div>
-        <div className="space-y-">
-          <div className="grid gap-6 sm:grid-cols-3 lg:grid-cols-4">
-            <div>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://suporteunimed.vercel.app/"
-                className="block"
-              >
-                <div className="rounded-xl  bg-black border border-gray-700 shadow-lg hover:shadow-2xl transition-shadow duration-300 relative overflow-hidden group">
-                  <div className="relative">
-                    <Image
-                      src="https://private-user-images.githubusercontent.com/99347254/388698857-fccfa93f-cdf1-4476-964d-f90c8e15414d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzgyNDEzMTksIm5iZiI6MTczODI0MTAxOSwicGF0aCI6Ii85OTM0NzI1NC8zODg2OTg4NTctZmNjZmE5M2YtY2RmMS00NDc2LTk2NGQtZjkwYzhlMTU0MTRkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTAxMzAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwMTMwVDEyNDMzOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTNlMWFiNjNmYjZlYWJlMzk1NDk1YjU2ZGJhZTMyMDljMDNmODdmOTc4YjM2ZWI2M2JlOTU1MTIyYzUzYmRiM2QmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.7q264KEqrMMONpUh-AgYfR5BfBRzi03vUrJnyfIl8co"
-                      alt="Suporte Unimed"
-                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="text-gray-200 w-8 h-8"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <title>Link externo</title>
-                        <path d="M15 3h6v6" />
-                        <path d="M10 14 21 3" />
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-                      Suporte Unimed
-                    </h2>
-                    <p className="text-gray-400">
-                      Site com links rápidos para suporte externo da equipe de
-                      suporte técnico.
-                    </p>
-                  </div>
-                  <div className="p-3 flex items-center justify-between">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center text-primary">
-                      Ver Projeto
-                      <FontAwesomeIcon
-                        className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1"
-                        icon={faChevronRight}
-                      />
-                    </div>
+        <h1 className="text-4xl font-bold mb-8">Projetos</h1>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project) => (
+            <Link
+              key={project.id}
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block group"
+            >
+              <div className="rounded-xl bg-black border border-gray-700 shadow-lg hover:shadow-2xl transition-shadow duration-300 relative overflow-hidden">
+                <div className="relative">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                    width={600}
+                    height={300}
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <ExternalLink className="w-6 h-6 text-white" />
                   </div>
                 </div>
-              </a>
-            </div>
-            <div>
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://oandrezito.github.io/dev.finances/"
-                className="block"
-              >
-                <div className="rounded-xl  bg-black border border-gray-700 shadow-lg hover:shadow-2xl transition-shadow duration-300 relative overflow-hidden group">
-                  <div className="relative">
-                    <Image
-                      src="https://private-user-images.githubusercontent.com/99347254/358933440-4285977c-e365-4017-9708-a342d89fca27.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzIyMjQ0NjgsIm5iZiI6MTczMjIyNDE2OCwicGF0aCI6Ii85OTM0NzI1NC8zNTg5MzM0NDAtNDI4NTk3N2MtZTM2NS00MDE3LTk3MDgtYTM0MmQ4OWZjYTI3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDExMjElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQxMTIxVDIxMjI0OFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ4MDlmMWYwMDE2NzMyNWYxM2U1ODZjZTc1OTNhNjA1MDAwMWE5N2M3MTIxNmY0Y2EzZTE2OGJiMmI2Y2ZmM2MmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.YwZ8uOI2xPCOiSFZta0mj7JtRJrT1ayj3pjaK-eSDsA"
-                      alt="dev.finance$"
-                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="text-gray-200 w-8 h-8"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <title>proximo</title>
-                        <path d="M15 3h6v6" />
-                        <path d="M10 14 21 3" />
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-                      dev.finance$
-                    </h2>
-                    <p className="text-gray-400">
-                      O Dev.Finance é um projeto simples para auxiliar no
-                      controle das finanças.
-                    </p>
-                  </div>
-                  <div className="p-3 flex items-center justify-between">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center text-primary">
-                      Ver Projeto
-                      <FontAwesomeIcon
-                        className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1"
-                        icon={faChevronRight}
-                      />
-                    </div>
-                  </div>
+                <div className="p-4">
+                  <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h2>
+                  <p className="text-gray-400">{project.description}</p>
                 </div>
-              </Link>
-            </div>
-          </div>
+                <div className="p-4 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary">
+                  Ver Projeto
+                  <ChevronRight />
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
