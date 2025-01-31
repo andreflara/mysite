@@ -24,8 +24,7 @@ const projects = [
   {
     id: 3,
     title: "Group_Links",
-    description:
-      "Acesso rapido a Links de sites.",
+    description: "Acesso rapido a Links de sites.",
     image: "/grouplinks.png",
     link: "https://group-links.vercel.app/",
   },
@@ -52,28 +51,28 @@ export default function Projects() {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="block group"
+              className="block group w-full"
             >
-              <div className="rounded-xl bg-black border border-gray-700 shadow-lg hover:shadow-2xl transition-shadow duration-300 relative overflow-hidden">
-                <div className="relative">
+              <div className="h-96 w-full rounded-xl bg-black border border-gray-700 shadow-lg hover:shadow-2xl transition-shadow duration-300 relative overflow-hidden">
+                <div className="relative h-56">
                   <Image
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                    width={600}
-                    height={300}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    width={400}
+                    height={200}
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <ExternalLink className="w-6 h-6 text-white" />
                   </div>
                 </div>
-                <div className="p-4">
-                  <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                <div className="p-4 h-32">
+                  <h2 className="text-xl font-semibold mb-2 truncate group-hover:text-primary transition-colors">
                     {project.title}
                   </h2>
-                  <p className="text-gray-400">{project.description}</p>
+                  <p className="text-gray-400 line-clamp-3">{project.description}</p>
                 </div>
-                <div className="p-4 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary">
+                <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary bg-black bg-opacity-75">
                   Ver Projeto
                   <ChevronRight />
                 </div>
