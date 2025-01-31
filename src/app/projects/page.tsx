@@ -23,6 +23,14 @@ const projects = [
   },
   {
     id: 3,
+    title: "Group_Links",
+    description:
+      "Acesso rapido a Links de sites.",
+    image: "/grouplinks.png",
+    link: "https://group-links.vercel.app/",
+  },
+  {
+    id: 4,
     title: "Escola Bíblica de Obreiros",
     description:
       "Lading Page criada para a Escola Bíblica de Obreiros da Igreja Assembleia de Deus em Curitiba.",
