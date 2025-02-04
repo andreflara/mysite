@@ -19,7 +19,7 @@ const projects = [
     description:
       "O Dev.Finance é um projeto simples para auxiliar no controle das finanças.",
     image: "/devfinance.png",
-    link: "https://oandrezito.github.io/dev.finances/",
+    link: "https://andreflara.github.io/dev.finances/",
   },
   {
     id: 3,

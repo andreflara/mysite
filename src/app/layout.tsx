@@ -9,7 +9,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Andre Fernando",
-  description: "hobby",
+  description: "Meu portifólio",
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
