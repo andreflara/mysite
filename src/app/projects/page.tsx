@@ -23,10 +23,10 @@ const projects = [
   },
   {
     id: 3,
-    title: "Group_Links",
+    title: "Search Hub",
     description: "Acesso rapido a Links de sites.",
     image: "/grouplinks.png",
-    link: "https://group-links.vercel.app/",
+    link: "https://searchhubs.vercel.app/",
   },
   {
     id: 4,
