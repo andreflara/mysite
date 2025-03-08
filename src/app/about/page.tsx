@@ -88,20 +88,20 @@ export default function Profile() {
               <h3 className="text-xl font-bold mb-4">Bio</h3>
               <p className="text-gray-400 leading-relaxed">
                 Sou o <strong>André Fernando</strong>, profissional de TI
-                apaixonado por tecnologia, atuando como Técnico de Suporte. No
+                entusiasta por tecnologia, atuando como Técnico de Suporte. No
                 meu dia a dia, além de prestar suporte técnico, ajudo na
                 resolução de problemas e na implementação de soluções para
                 otimizar processos.
                 <br />
                 Atualmente, estou cursando Gestão de Tecnologia da Informação e
-                me dedicando ao estudo de desenvolvimento web, criando projetos
+                me dedicando ao estudo de desenvolvimento e analise de sistemas, criando projetos
                 para praticar e aprender. Estou sempre em busca de novos
                 desafios e experiências para expandir meus conhecimentos e
                 evoluir na área de tecnologia.
                 <br />
-                Sou fã de Star Wars, open source e projetos paralelos. No tempo
-                livre, gosto de jogar, tocar instrumentos musicais, assistir
-                filmes e restaurar o meu Fusca.
+                Sou fã de Linux, projetos open source e projetos paralelos. No tempo
+                livre, gosto de jogar jogos no PC, tocar instrumentos musicais, assistir
+                filmes e restaurar o meu Fusca 84.
               </p>
             </div>
 
