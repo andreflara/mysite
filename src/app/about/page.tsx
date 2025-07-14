@@ -32,8 +32,8 @@ const experiences = [
     title: "Suporte de TI - Unimed Curitiba",
     company: "Quality Digital",
     location: "Curitiba/PR",
-    period: "jul de 2022 – o momento",
-    duration: "2 anos 7 meses",
+    period: "jul de 2022 – mai de 2025",
+    duration: "2 anos 10 meses",
   },
   {
     title: "Assistente Administrativo",
